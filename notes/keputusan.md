@@ -67,3 +67,10 @@ Konteks: F2 menyebut kunci 10 detik dan satu kali coba ulang. Saat membangun ter
 Keputusan: TTL kunci 4 detik; pemegang yang sama memperpanjang seketika; pemegang lain menunggu sampai `expiresAt` lalu mencoba lagi (maksimal 12 detik, 25–40 detik di uji). Pemulihan transaksi `pending` dijalankan juga di dalam setiap pembayaran.
 Alasan: kasir tunggal tidak menunggu sama sekali; konflik antar-tab selesai dalam ±4 detik dan hasilnya tetap "stok cukup" atau "ditolak karena stok".
 Bukti: menunggu hasil T-09a dan T-09b di artifact uji risiko.
+
+## K08 — Koreksi klaim: ambang T-07b dan kecepatan pembayaran
+Tanggal: 2026-10-29 · Tag: bebas · Status: 🔧 (koreksi atas klaim sendiri)
+Konteks: T-07b gagal pada putaran 1 (3149 ms vs ambang 3000 ms), padahal stok benar dan tidak ada tunggu kunci. Ambang 3000 ms saya tentukan tanpa dasar; pembayaran memang ±3 detik (8 perjalanan db berurutan, R5 di F2).
+Keputusan: (1) ambang T-07b = 4000 ms, yaitu masa berlaku kunci, karena tujuannya membuktikan pemegang kunci yang sama tidak menunggu kunci habis; (2) kurangi perjalanan: perpanjangan kunci dilewati bila belum setengah masa berlaku tetapi dicek sebelum tiap tulis stok, barang dibaca serentak. Penulisan stok tetap berurutan.
+Alasan: akar masalah adalah jumlah perjalanan, bukan logika; urutan simpan dan keamanan pemulihan tidak berubah.
+Bukti: putaran 1 di `hasil-uji.md`; putaran 2 menunggu.
