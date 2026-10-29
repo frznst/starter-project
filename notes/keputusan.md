@@ -74,3 +74,10 @@ Konteks: T-07b gagal pada putaran 1 (3149 ms vs ambang 3000 ms), padahal stok be
 Keputusan: (1) ambang T-07b = 4000 ms, yaitu masa berlaku kunci, karena tujuannya membuktikan pemegang kunci yang sama tidak menunggu kunci habis; (2) kurangi perjalanan: perpanjangan kunci dilewati bila belum setengah masa berlaku tetapi dicek sebelum tiap tulis stok, barang dibaca serentak. Penulisan stok tetap berurutan.
 Alasan: akar masalah adalah jumlah perjalanan, bukan logika; urutan simpan dan keamanan pemulihan tidak berubah.
 Bukti: putaran 1 di `hasil-uji.md`; putaran 2 menunggu.
+
+## K09 — Uji coba go-live sebelum F3 selesai; go-live lewat undangan, bukan link publik
+Tanggal: 2026-10-29 · Tag: bebas · Status: 🔁
+Konteks: pemilik ingin mencoba go-live lebih awal, sebelum layar Barang, riwayat, ringkasan, dan ekspor ada; memakai data contoh.
+Keputusan: artifact kasir (`B17113Fxjdo1UcHyvcpeFe`) dipakai pemilik untuk uji coba; fitur dilengkapi setelahnya di URL yang sama (data bertahan lintas penerbitan). Go-live nyata lewat undangan (menu Share, akses tulis), bukan link publik, karena penulisan db butuh login dan data uang/stok tidak boleh terbuka. Hosting gratis sendiri (opsi C) ditunda; lapisan `buatStore` sudah terisolasi bila suatu saat dibutuhkan.
+Alasan: biaya nol, sudah berjalan, data tertutup. Kekurangan yang diketahui: belum ada layar Barang, riwayat, ringkasan, ekspor/cadangan (R2); pemakai butuh akun claude.ai.
+Bukti: belum ada; hasil coba pemilik dicatat di `hasil-uji.md`.

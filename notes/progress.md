@@ -9,8 +9,8 @@ Diperbarui: 2026-10-29
 - Fase aktif: F3 langkah 1 (uji risiko). Artifact uji: <https://claude.ai/artifact/Jxh868gVv2y41h6dkwTayv> (memuat inti `POS` = logika + simpan; baca dengan Artifact `action: read`, jangan menebak).
 - Langkah 1 (uji risiko) selesai: 11/11 lulus (K08). Langkah 2 (kasir minimal) terbit: <https://claude.ai/artifact/B17113Fxjdo1UcHyvcpeFe> (inti `POS` sama dengan artifact uji; 9 barang contoh di koleksi `barang`, nama bertanda "(contoh)").
 - Bila semua lulus → langkah 2: kasir minimal memakai inti yang sama (T-04..T-07). Bila gagal → perbaiki desain kunci dulu.
-- File yang relevan: `notes/rencana.md`, `notes/keputusan.md` (K01–K08).
-- Langkah berikutnya: pemilik mencoba kasir (T-04..T-07 di UI nyata) dan melapor; lalu langkah 3 (layar Barang + tambah stok: T-01..T-03).
+- File yang relevan: `notes/rencana.md`, `notes/keputusan.md` (K01–K09).
+- Pemilik uji coba go-live dulu dengan data contoh (K09). Langkah berikutnya: pemilik melaporkan hasil coba kasir (T-04..T-07 di UI nyata); lalu langkah 3 (layar Barang + tambah stok: T-01..T-03), ekspor CSV, riwayat, ringkasan, uji akhir.
 - Blocker: pemilik menjalankan uji risiko.
 
 ## Pengingat
