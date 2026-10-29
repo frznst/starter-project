@@ -60,3 +60,10 @@ Konteks: database artifact tidak punya transaksi dan penulisan bersifat tulis-te
 Keputusan: stok sebagai field; setiap tulis stok lewat kunci `kunci/kasir`, baca ulang stok, simpan transaksi `pending` dengan stok sebelum/sesudah, set stok absolut, tandai `selesai`; pemulihan saat dibuka. Tanpa PIN (artifact privat, D4). Rincian D1–D8 ada di artifact F2.
 Alasan: mencegah stok ganda (R1) dan stok negatif (NFR-02) dengan alat yang ada; opsi buku besar mutasi ditolak (tidak menghilangkan balapan, banyak dokumen).
 Bukti: belum terbukti berjalan; diuji pertama di F3 (T-08, T-09).
+
+## K07 — Kunci kasir 4 detik, menunggu sampai kunci habis (menyimpang dari F2)
+Tanggal: 2026-10-29 · Tag: bebas · Status: 🔧 (revisi K06)
+Konteks: F2 menyebut kunci 10 detik dan satu kali coba ulang. Saat membangun terlihat bahwa kunci tidak punya "lepas", ia habis sendiri; 10 detik membuat tab kedua menunggu terlalu lama, dan satu kali coba ulang pasti gagal.
+Keputusan: TTL kunci 4 detik; pemegang yang sama memperpanjang seketika; pemegang lain menunggu sampai `expiresAt` lalu mencoba lagi (maksimal 12 detik, 25–40 detik di uji). Pemulihan transaksi `pending` dijalankan juga di dalam setiap pembayaran.
+Alasan: kasir tunggal tidak menunggu sama sekali; konflik antar-tab selesai dalam ±4 detik dan hasilnya tetap "stok cukup" atau "ditolak karena stok".
+Bukti: menunggu hasil T-09a dan T-09b di artifact uji risiko.
