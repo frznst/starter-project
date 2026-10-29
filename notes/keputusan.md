@@ -46,3 +46,17 @@ Konteks: pemilik meminta cara kerja Guru Besar AI sebagai acuan.
 Keputusan: perencanaan sebelum kode, risiko diuji lebih dulu, tiap syarat punya kriteria lulus, aturan kritis di kode, hasil uji berupa angka, catatan diperbarui bersama perubahan.
 Alasan: sumber metodologi template ini. Acuan: `/Users/zaza/Projects/purwadhika-capstone-3` (`notes/prinsip-kerja.md`).
 Bukti: -
+
+## K05 — F1 disetujui, asumsi A1–A6 disetujui
+Tanggal: 2026-10-29 · Tag: bebas · Status: 💬
+Konteks: pemilik menjawab "oke stuju" atas artifact F1, tanpa koreksi.
+Keputusan: ruang lingkup, FR-01..FR-10, NFR-01..NFR-06 dan A1–A6 berlaku. A6 (jenis toko) = umum, karena tidak ada kebutuhan khusus yang disebut.
+Alasan: gerbang waterfall (K01).
+Bukti: percakapan 2026-10-29.
+
+## K06 — Desain F2: kunci tulis + pending-lalu-selesai, tanpa PIN
+Tanggal: 2026-10-29 · Tag: bebas · Status: ✅
+Konteks: database artifact tidak punya transaksi dan penulisan bersifat tulis-terakhir-menang; penyimpanan bersama dipastikan tersedia lewat daftar kapabilitas akun.
+Keputusan: stok sebagai field; setiap tulis stok lewat kunci `kunci/kasir`, baca ulang stok, simpan transaksi `pending` dengan stok sebelum/sesudah, set stok absolut, tandai `selesai`; pemulihan saat dibuka. Tanpa PIN (artifact privat, D4). Rincian D1–D8 ada di artifact F2.
+Alasan: mencegah stok ganda (R1) dan stok negatif (NFR-02) dengan alat yang ada; opsi buku besar mutasi ditolak (tidak menghilangkan balapan, banyak dokumen).
+Bukti: belum terbukti berjalan; diuji pertama di F3 (T-08, T-09).
