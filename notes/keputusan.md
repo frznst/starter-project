@@ -81,3 +81,11 @@ Konteks: pemilik ingin mencoba go-live lebih awal, sebelum layar Barang, riwayat
 Keputusan: artifact kasir (`B17113Fxjdo1UcHyvcpeFe`) dipakai pemilik untuk uji coba; fitur dilengkapi setelahnya di URL yang sama (data bertahan lintas penerbitan). Go-live nyata lewat undangan (menu Share, akses tulis), bukan link publik, karena penulisan db butuh login dan data uang/stok tidak boleh terbuka. Hosting gratis sendiri (opsi C) ditunda; lapisan `buatStore` sudah terisolasi bila suatu saat dibutuhkan.
 Alasan: biaya nol, sudah berjalan, data tertutup. Kekurangan yang diketahui: belum ada layar Barang, riwayat, ringkasan, ekspor/cadangan (R2); pemakai butuh akun claude.ai.
 Bukti: belum ada; hasil coba pemilik dicatat di `hasil-uji.md`.
+
+## K10 — Usulan UI "Pas": mockup layar + brand guideline, di branch terpisah
+Tanggal: 2026-10-29 · Tag: improvisasi · Status: 💬 (menunggu keputusan Firza)
+Konteks: Reiner (kolaborator) menawarkan desain UI untuk aplikasi POS. Arahan Reiner: font dan mood dari HK Grotesk Wide, tampilan kartu, efek hover pada kartu, warna mencolok hanya untuk CTA, desain sederhana yang tidak terasa generik buatan AI.
+Keputusan: mockup berwarna untuk laptop (Kasir, Barang + tambah stok, Riwayat, Ringkasan) plus logo dan brand guideline, sebagai Design canvas: <https://claude.ai/artifact/C9QgKkDknQb6kA3PTvkMyW>. Salinan sumbernya di `design/pas/`. Nama usulan "Pas" (dari "uangnya pas"). Satu tombol biru `#2340FF` per layar; selebihnya tinta `#141414` dan kertas `#F4F4F1`; peringatan memakai teks tebal, bukan merah. Kartu naik 3 px dengan bayangan keras saat hover.
+Alasan: dibuat di branch `ui/tampilan` agar Firza bebas memilih merge atau tidak (P4). Font sementara Hanken Grotesk (Google Fonts, OFL), karena HK Grotesk Wide harus di-checkout di hanken.co dan lisensi web-nya terbatas satu domain dan 10.000 kunjungan per bulan. Belum ada kode app yang diubah; artifact kasir Firza tidak bisa dibuka Reiner.
+Batasan: data barang dan nota adalah contoh buatan, bukan data Firza. Batas "menipis" = stok 5 atau kurang adalah tebakan; sesuaikan dengan aturan F2 bila berbeda. Canvas masih privat sampai dibagikan lewat menu Share.
+Bukti: belum ada; menunggu tinjauan Firza.

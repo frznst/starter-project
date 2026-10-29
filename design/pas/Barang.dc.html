@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Barang dan stok</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&amp;display=swap">
+<style>
+body{margin:0;background:#F4F4F1}
+a{color:#141414}a:hover{color:#2340FF}
+.tab{color:#5A5A55;text-decoration:none;padding:10px 2px;border-bottom:2px solid transparent;font-weight:600;font-size:15px}
+.tab:hover{color:#141414}
+.tab-on{color:#141414;border-bottom-color:#141414}
+.kartu{background:#FFFFFF;border:1.5px solid #DCDCD6;border-radius:10px;transition:transform .14s ease,box-shadow .14s ease,border-color .14s ease}
+.kartu:hover{transform:translate(-2px,-3px);border-color:#141414;box-shadow:3px 4px 0 #141414}
+.kartu-buka,.kartu-buka:hover{border-color:#141414;box-shadow:3px 4px 0 #141414;transform:translate(-2px,-3px)}
+.kartu-habis{background:transparent;border-style:dashed;border-color:#C9C9C2}
+.cta{background:#2340FF;color:#FFFFFF;border:0;border-radius:10px;cursor:pointer;transition:background .14s ease,transform .14s ease}
+.cta:hover{background:#1A31D1}
+.cta:active{transform:translateY(1px)}
+.btn2{background:#141414;color:#F4F4F1;border:0;border-radius:8px;cursor:pointer}
+.btn2:hover{background:#34342F}
+.btn3{background:transparent;color:#141414;border:1.5px solid #141414;border-radius:8px;cursor:pointer}
+.btn3:hover{background:#F4F4F1}
+.chip{border:1.5px solid #DCDCD6;background:transparent;color:#141414;border-radius:999px;cursor:pointer}
+.chip:hover{border-color:#141414}
+.chip-on,.chip-on:hover{background:#141414;color:#F4F4F1;border-color:#141414}
+.teks{background:transparent;border:0;padding:0;color:#5A5A55;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.teks:hover{color:#141414}
+.isian{height:46px;box-sizing:border-box;padding:0 14px;border:1.5px solid #141414;border-radius:8px;background:#FFFFFF;font-family:inherit;font-size:16px;color:#141414}
+</style>
+</helmet>
+<div style="min-height: 1080px; background: #F4F4F1; color: #141414; font-family: 'Hanken Grotesk', system-ui, sans-serif; display: flex; flex-direction: column">
+  <header style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 40px; padding: 16px 32px; border-bottom: 1.5px solid #DCDCD6">
+    <a href="Main.dc.html" aria-label="Pas, ke layar kasir" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #141414">
+      <svg width="30" height="30" viewBox="0 0 48 48" aria-hidden="true"><g transform="rotate(-6 24 24)"><rect x="3" y="3" width="42" height="42" rx="11" fill="#141414"></rect><rect x="12" y="15.5" width="24" height="5.5" rx="2.75" fill="#F4F4F1"></rect><rect x="12" y="27" width="24" height="5.5" rx="2.75" fill="#F4F4F1"></rect></g></svg>
+      <span style="font-size: 27px; font-weight: 800; letter-spacing: -0.6px; line-height: 1">pas</span>
+    </a>
+    <nav aria-label="Menu utama" style="display: flex; flex-wrap: wrap; gap: 4px 28px">
+      <a href="Main.dc.html" class="tab">Kasir</a>
+      <a href="Barang.dc.html" class="tab tab-on" aria-current="page">Barang</a>
+      <a href="Riwayat.dc.html" class="tab">Riwayat</a>
+      <a href="Ringkasan.dc.html" class="tab">Ringkasan</a>
+    </nav>
+    <div style="margin-left: auto; display: flex; flex-direction: column; align-items: flex-end; gap: 2px">
+      <span style="font-size: 14px; font-weight: 600">Kamis, 29 Oktober</span>
+      <span style="font-size: 13px; color: #5A5A55">[Nama toko]</span>
+    </div>
+  </header>
+
+  <main style="flex-grow: 1; width: 100%; max-width: 1440px; margin: 0 auto; box-sizing: border-box; padding: 32px 32px 56px; display: flex; flex-direction: column; gap: 22px">
+    <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <h1 style="margin: 0; font-size: 40px; font-weight: 800; letter-spacing: -1px; line-height: 1">Barang</h1>
+        <p style="margin: 0; font-size: 15px; color: #5A5A55">{{countText}}</p>
+      </div>
+      <button type="button" class="cta" onClick="{{openNew}}" style="height: 52px; padding: 0 24px; font-family: inherit; font-size: 17px; font-weight: 700">+ Barang baru</button>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px">
+      <div role="group" aria-label="Saring stok" style="display: flex; flex-wrap: wrap; gap: 8px">
+        <sc-for list="{{filters}}" as="f" hint-placeholder-count="3">
+          <button type="button" class="chip {{f.cls}}" aria-pressed="{{f.on}}" onClick="{{f.pick}}" style="height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 600">{{f.label}}</button>
+        </sc-for>
+      </div>
+      <label style="margin-left: auto; display: flex; align-items: center; gap: 10px; font-size: 14px; color: #5A5A55">Cari
+        <input type="search" class="isian" value="{{q}}" onChange="{{onSearch}}" placeholder="Nama barang" style="width: 240px">
+      </label>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(236px, 1fr)); gap: 16px; align-items: start">
+      <sc-if value="{{showNew}}" hint-placeholder-val="{{false}}">
+        <form onSubmit="{{saveNew}}" class="kartu kartu-buka" aria-label="Barang baru" style="padding: 18px; display: flex; flex-direction: column; gap: 12px">
+          <span style="font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #5A5A55">Barang baru</span>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 600">Nama
+            <input class="isian" value="{{nf.name}}" onChange="{{nf.setName}}" placeholder="mis. Susu kental manis">
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 600">Kategori
+            <select class="isian" value="{{nf.cat}}" onChange="{{nf.setCat}}">
+              <option>Makanan</option>
+              <option>Minuman</option>
+              <option>Dapur</option>
+              <option>Kebersihan</option>
+            </select>
+          </label>
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+            <label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 600">Harga (Rp)
+              <input class="isian" inputmode="numeric" value="{{nf.price}}" onChange="{{nf.setPrice}}" placeholder="0" style="min-width: 0">
+            </label>
+            <label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 600">Stok awal
+              <input class="isian" inputmode="numeric" value="{{nf.stock}}" onChange="{{nf.setStock}}" placeholder="0" style="min-width: 0">
+            </label>
+          </div>
+          <sc-if value="{{nf.hasError}}" hint-placeholder-val="{{false}}">
+            <p role="alert" style="margin: 0; display: flex; gap: 8px; align-items: flex-start; font-size: 14px; font-weight: 700; line-height: 1.4">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 1px"><circle cx="12" cy="12" r="9.5"></circle><path d="M12 7.5v5.5M12 16.5v.01"></path></svg>
+              {{nf.error}}
+            </p>
+          </sc-if>
+          <div style="display: flex; align-items: center; gap: 14px; margin-top: 4px">
+            <button type="submit" class="btn2" style="height: 44px; padding: 0 20px; font-family: inherit; font-size: 15px; font-weight: 700">Simpan</button>
+            <button type="button" class="teks" onClick="{{closeNew}}" style="font-family: inherit; font-size: 14px">Batal</button>
+          </div>
+        </form>
+      </sc-if>
+
+      <sc-for list="{{items}}" as="it" hint-placeholder-count="12">
+        <article class="kartu {{it.cls}}" aria-label="{{it.name}}" style="padding: 18px; display: flex; flex-direction: column; gap: 16px">
+          <div style="display: flex; flex-direction: column; gap: 4px">
+            <span style="font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #5A5A55">{{it.cat}}</span>
+            <h2 style="margin: 0; font-size: 17px; font-weight: 600; line-height: 1.3">{{it.name}}</h2>
+            <span style="font-size: 15px; color: #5A5A55; font-variant-numeric: tabular-nums">{{it.price}}</span>
+          </div>
+          <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 12px">
+            <div style="display: flex; flex-direction: column; gap: 2px">
+              <span style="font-size: 44px; font-weight: 800; letter-spacing: -1.5px; line-height: 1; font-variant-numeric: tabular-nums">{{it.stock}}</span>
+              <span style="font-size: 13px; color: #5A5A55">stok</span>
+            </div>
+            <sc-if value="{{it.flag}}" hint-placeholder-val="{{false}}">
+              <span style="padding: 5px 10px; border: 1.5px solid #141414; border-radius: 999px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px">{{it.flagText}}</span>
+            </sc-if>
+          </div>
+          <sc-if value="{{it.closed}}" hint-placeholder-val="{{true}}">
+            <button type="button" class="btn3" onClick="{{it.open}}" style="height: 44px; font-family: inherit; font-size: 15px; font-weight: 600">Tambah stok</button>
+          </sc-if>
+          <sc-if value="{{it.editing}}" hint-placeholder-val="{{false}}">
+            <div style="display: flex; flex-direction: column; gap: 10px; padding-top: 14px; border-top: 1.5px dashed #DCDCD6">
+              <span style="font-size: 14px; font-weight: 600">Barang masuk</span>
+              <div style="display: flex; align-items: center; gap: 8px">
+                <button type="button" class="btn3" onClick="{{it.minus}}" aria-label="Kurangi jumlah masuk" style="width: 44px; height: 44px; padding: 0; font-family: inherit; font-size: 20px">−</button>
+                <span aria-live="polite" style="flex-grow: 1; text-align: center; font-size: 24px; font-weight: 800; font-variant-numeric: tabular-nums">+{{it.add}}</span>
+                <button type="button" class="btn3" onClick="{{it.plus}}" aria-label="Tambah jumlah masuk" style="width: 44px; height: 44px; padding: 0; font-family: inherit; font-size: 20px">+</button>
+              </div>
+              <span style="font-size: 13px; color: #5A5A55; font-variant-numeric: tabular-nums">Jadi {{it.after}} setelah disimpan</span>
+              <div style="display: flex; align-items: center; gap: 14px">
+                <button type="button" class="btn2" onClick="{{it.save}}" style="height: 44px; padding: 0 20px; font-family: inherit; font-size: 15px; font-weight: 700">Simpan</button>
+                <button type="button" class="teks" onClick="{{it.cancel}}" style="font-family: inherit; font-size: 14px">Batal</button>
+              </div>
+            </div>
+          </sc-if>
+        </article>
+      </sc-for>
+    </div>
+    <sc-if value="{{noResult}}" hint-placeholder-val="{{false}}">
+      <p style="margin: 0; font-size: 15px; color: #5A5A55">Tidak ada barang di daftar ini.</p>
+    </sc-if>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1080}}'>
+class Component extends DCLogic {
+  catalog() {
+    return [
+      { id: 4, name: 'Minyak goreng 1 L', cat: 'Dapur', price: 18000, stock: 3 },
+      { id: 8, name: 'Teh botol 350 ml', cat: 'Minuman', price: 5000, stock: 0 },
+      { id: 9, name: 'Roti tawar', cat: 'Makanan', price: 15000, stock: 4 },
+      { id: 1, name: 'Mi goreng instan', cat: 'Makanan', price: 3500, stock: 48 },
+      { id: 2, name: 'Telur ayam, per butir', cat: 'Dapur', price: 2200, stock: 90 },
+      { id: 3, name: 'Gula pasir 1 kg', cat: 'Dapur', price: 17500, stock: 12 },
+      { id: 5, name: 'Beras 5 kg', cat: 'Dapur', price: 72000, stock: 6 },
+      { id: 6, name: 'Kopi sachet', cat: 'Minuman', price: 1500, stock: 106 },
+      { id: 7, name: 'Air mineral 600 ml', cat: 'Minuman', price: 4000, stock: 36 },
+      { id: 10, name: 'Kecap manis 135 ml', cat: 'Dapur', price: 6500, stock: 18 },
+      { id: 11, name: 'Sabun mandi batang', cat: 'Kebersihan', price: 4500, stock: 22 },
+      { id: 12, name: 'Deterjen bubuk 800 g', cat: 'Kebersihan', price: 21000, stock: 9 },
+    ];
+  }
+
+  rp(n) {
+    return 'Rp' + Math.round(n).toLocaleString('id-ID');
+  }
+
+  renderVals() {
+    const st = this.state || {};
+    const list = st.list || this.catalog();
+    const filter = st.filter || 'Semua';
+    const q = st.q || '';
+    const editId = 'editId' in st ? st.editId : 4;
+    const addQty = st.addQty || 12;
+    const nf = st.nf || { name: '', cat: 'Makanan', price: '', stock: '', error: '' };
+
+    const low = list.filter((p) => p.stock > 0 && p.stock <= 5).length;
+    const out = list.filter((p) => p.stock === 0).length;
+    const needle = q.trim().toLowerCase();
+    const shown = list.filter((p) => {
+      if (filter === 'Perlu diisi' && p.stock > 5) return false;
+      return !needle || p.name.toLowerCase().includes(needle);
+    });
+
+    const setNf = (patch) => this.setState({ nf: { ...nf, ...patch, error: '' } });
+    const digits = (v) => v.replace(/\D/g, '');
+
+    return {
+      countText: list.length + ' barang · ' + (low + out) + ' perlu diisi',
+      filters: ['Semua', 'Perlu diisi'].map((label) => ({
+        label: label === 'Perlu diisi' ? 'Perlu diisi (' + (low + out) + ')' : label,
+        on: label === filter,
+        cls: label === filter ? 'chip-on' : '',
+        pick: () => this.setState({ filter: label }),
+      })),
+      q,
+      onSearch: (e) => this.setState({ q: e.target.value }),
+      showNew: !!st.showNew,
+      openNew: () => this.setState({ showNew: true }),
+      closeNew: () => this.setState({ showNew: false, nf: null }),
+      nf: {
+        ...nf,
+        hasError: !!nf.error,
+        setName: (e) => setNf({ name: e.target.value }),
+        setCat: (e) => setNf({ cat: e.target.value }),
+        setPrice: (e) => setNf({ price: digits(e.target.value) }),
+        setStock: (e) => setNf({ stock: digits(e.target.value) }),
+      },
+      saveNew: (e) => {
+        e.preventDefault();
+        const name = nf.name.trim();
+        const price = Number(nf.price);
+        let error = '';
+        if (!name) error = 'Namanya belum diisi.';
+        else if (list.some((p) => p.name.toLowerCase() === name.toLowerCase())) error = 'Barang dengan nama ini sudah ada.';
+        else if (!price) error = 'Harga harus lebih dari Rp0.';
+        if (error) { this.setState({ nf: { ...nf, error } }); return; }
+        const id = Math.max(...list.map((p) => p.id)) + 1;
+        this.setState({
+          list: [{ id, name, cat: nf.cat, price, stock: Number(nf.stock) || 0 }, ...list],
+          showNew: false,
+          nf: null,
+        });
+      },
+      items: shown.map((p) => {
+        const editing = editId === p.id;
+        return {
+          name: p.name,
+          cat: p.cat,
+          price: this.rp(p.price),
+          stock: p.stock,
+          flag: p.stock <= 5,
+          flagText: p.stock === 0 ? 'Habis' : 'Menipis',
+          cls: editing ? 'kartu-buka' : (p.stock === 0 ? 'kartu-habis' : ''),
+          editing,
+          closed: !editing,
+          add: addQty,
+          after: p.stock + addQty,
+          open: () => this.setState({ editId: p.id, addQty: 1 }),
+          plus: () => this.setState({ addQty: Math.min(9999, addQty + 1) }),
+          minus: () => this.setState({ addQty: Math.max(1, addQty - 1) }),
+          cancel: () => this.setState({ editId: null }),
+          save: () => this.setState({
+            list: list.map((x) => (x.id === p.id ? { ...x, stock: x.stock + addQty } : x)),
+            editId: null,
+          }),
+        };
+      }),
+      noResult: shown.length === 0,
+    };
+  }
+}
+</script>
+</body>
+</html>

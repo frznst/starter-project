@@ -11,6 +11,7 @@ Diperbarui: 2026-10-29
 - Bila semua lulus → langkah 2: kasir minimal memakai inti yang sama (T-04..T-07). Bila gagal → perbaiki desain kunci dulu.
 - File yang relevan: `notes/rencana.md`, `notes/keputusan.md` (K01–K09).
 - Pemilik uji coba go-live dulu dengan data contoh (K09). Langkah berikutnya: pemilik melaporkan hasil coba kasir (T-04..T-07 di UI nyata); lalu langkah 3 (layar Barang + tambah stok: T-01..T-03), ekspor CSV, riwayat, ringkasan, uji akhir.
+- Usulan UI dari Reiner (branch `ui/tampilan`, K10): mockup 4 layar + logo dan brand guideline "Pas", sumber di `design/pas/`. Menunggu keputusan Firza: pakai, ubah, atau tolak.
 - Blocker: pemilik menjalankan uji risiko.
 
 ## Pengingat
