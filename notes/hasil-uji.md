@@ -22,3 +22,5 @@ Angka penting: T-08a dan T-08b lulus (pemulihan tepat sekali, juga saat diulang)
 ## 2026-10-29 · F3 langkah 1 (uji risiko) · artifact versi 2
 Perubahan: perpanjangan kunci dilewati bila belum setengah masa berlaku dan dicek sebelum tiap tulis stok; barang dibaca serentak; ambang T-07b = 4000 ms (masa berlaku kunci).
 Hasil: menunggu pemilik menjalankan ulang.
+Hasil putaran 2 (dibaca dari db `uji_hasil/terakhir`, 2026-10-29): **11/11 lulus**. T-07 2003 ms, T-07b 2012 ms (sebelumnya 2994/3149 ms); T-08a, T-08b lulus; T-09a satu berhasil, satu ditolak "stok", stok 0, 7742 ms; T-09b 2 berhasil, 1 ditolak, stok 0.
+Batasan: pembeli serentak disimulasikan di satu tab dengan pemegang kunci berbeda, belum dari dua perangkat sungguhan.
