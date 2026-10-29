@@ -9,6 +9,9 @@ Diperbarui: YYYY-MM-DD
 - File yang relevan: (daftar pendek)
 - Blocker: -
 
+## Pengingat
+<!-- Hari penting, tenggat, hal yang harus dilakukan pemilik sendiri. Format: `(tgl)` -->
+
 ## Papan irisan
 Status: `belum` · `berjalan` · `menunggu keputusan` · `selesai`
 
