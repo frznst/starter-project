@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Riwayat nota</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&amp;display=swap">
+<style>
+body{margin:0;background:#F4F4F1}
+a{color:#141414}a:hover{color:#2340FF}
+.tab{color:#5A5A55;text-decoration:none;padding:10px 2px;border-bottom:2px solid transparent;font-weight:600;font-size:15px}
+.tab:hover{color:#141414}
+.tab-on{color:#141414;border-bottom-color:#141414}
+.kartu{background:#FFFFFF;border:1.5px solid #DCDCD6;border-radius:10px;cursor:pointer;transition:transform .14s ease,box-shadow .14s ease,border-color .14s ease}
+.kartu:hover{transform:translate(-2px,-3px);border-color:#141414;box-shadow:3px 4px 0 #141414}
+.kartu:active{transform:translate(0,0);box-shadow:0 0 0 #141414}
+.kartu:focus-visible{outline:3px solid #2340FF;outline-offset:2px}
+.kartu-buka,.kartu-buka:hover{border-color:#141414;box-shadow:3px 4px 0 #141414;transform:translate(-2px,-3px)}
+.cta{background:#2340FF;color:#FFFFFF;border:0;border-radius:10px;cursor:pointer;transition:background .14s ease,transform .14s ease}
+.cta:hover{background:#1A31D1}
+.cta:active{transform:translateY(1px)}
+.isian{height:46px;box-sizing:border-box;padding:0 14px;border:1.5px solid #141414;border-radius:8px;background:#FFFFFF;font-family:inherit;font-size:16px;color:#141414}
+</style>
+</helmet>
+<div style="min-height: 1000px; background: #F4F4F1; color: #141414; font-family: 'Hanken Grotesk', system-ui, sans-serif; display: flex; flex-direction: column">
+  <header style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 40px; padding: 16px 32px; border-bottom: 1.5px solid #DCDCD6">
+    <a href="Main.dc.html" aria-label="Pas, ke layar kasir" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #141414">
+      <svg width="30" height="30" viewBox="0 0 48 48" aria-hidden="true"><g transform="rotate(-6 24 24)"><rect x="3" y="3" width="42" height="42" rx="11" fill="#141414"></rect><rect x="12" y="15.5" width="24" height="5.5" rx="2.75" fill="#F4F4F1"></rect><rect x="12" y="27" width="24" height="5.5" rx="2.75" fill="#F4F4F1"></rect></g></svg>
+      <span style="font-size: 27px; font-weight: 800; letter-spacing: -0.6px; line-height: 1">pas</span>
+    </a>
+    <nav aria-label="Menu utama" style="display: flex; flex-wrap: wrap; gap: 4px 28px">
+      <a href="Main.dc.html" class="tab">Kasir</a>
+      <a href="Barang.dc.html" class="tab">Barang</a>
+      <a href="Riwayat.dc.html" class="tab tab-on" aria-current="page">Riwayat</a>
+      <a href="Ringkasan.dc.html" class="tab">Ringkasan</a>
+    </nav>
+    <div style="margin-left: auto; display: flex; flex-direction: column; align-items: flex-end; gap: 2px">
+      <span style="font-size: 14px; font-weight: 600">Kamis, 29 Oktober</span>
+      <span style="font-size: 13px; color: #5A5A55">[Nama toko]</span>
+    </div>
+  </header>
+
+  <main style="flex-grow: 1; width: 100%; max-width: 1440px; margin: 0 auto; box-sizing: border-box; padding: 32px 32px 56px; display: flex; flex-direction: column; gap: 22px">
+    <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <h1 style="margin: 0; font-size: 40px; font-weight: 800; letter-spacing: -1px; line-height: 1">Riwayat</h1>
+        <p style="margin: 0; font-size: 15px; color: #5A5A55; font-variant-numeric: tabular-nums">{{summary}}</p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px">
+        <label style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #5A5A55">Tanggal
+          <input type="date" class="isian" value="{{date}}" max="2026-10-29" onChange="{{onDate}}">
+        </label>
+        <button type="button" class="cta" onClick="{{exportCsv}}" disabled="{{noData}}" style="height: 52px; padding: 0 24px; font-family: inherit; font-size: 17px; font-weight: 700">Ekspor CSV</button>
+      </div>
+    </div>
+    <sc-if value="{{exported}}" hint-placeholder-val="{{false}}">
+      <p role="status" style="margin: 0; font-size: 14px; color: #141414">File <strong>{{fileName}}</strong> sudah diunduh. Simpan di tempat yang aman sebagai cadangan.</p>
+    </sc-if>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; align-items: start">
+      <sc-for list="{{notas}}" as="n" hint-placeholder-count="6">
+        <button type="button" class="kartu {{n.cls}}" onClick="{{n.toggle}}" aria-expanded="{{n.open}}" style="padding: 18px; display: flex; flex-direction: column; gap: 14px; text-align: left; font-family: inherit; color: #141414">
+          <span style="width: 100%; display: flex; justify-content: space-between; align-items: baseline">
+            <span style="font-size: 26px; font-weight: 800; letter-spacing: -0.5px; font-variant-numeric: tabular-nums">{{n.time}}</span>
+            <span style="font-size: 13px; color: #5A5A55; font-variant-numeric: tabular-nums">Nota #{{n.no}}</span>
+          </span>
+          <span style="font-size: 15px; line-height: 1.45; color: #5A5A55">{{n.preview}}</span>
+          <sc-if value="{{n.open}}" hint-placeholder-val="{{false}}">
+            <span style="width: 100%; display: flex; flex-direction: column; border-top: 1.5px dashed #DCDCD6">
+              <sc-for list="{{n.lines}}" as="l" hint-placeholder-count="3">
+                <span style="display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1.5px dashed #DCDCD6; font-size: 14px; font-variant-numeric: tabular-nums">
+                  <span>{{l.qty}} × {{l.name}}</span>
+                  <span style="font-weight: 600">{{l.sub}}</span>
+                </span>
+              </sc-for>
+              <span style="display: flex; justify-content: space-between; padding: 9px 0 0; font-size: 14px; color: #5A5A55; font-variant-numeric: tabular-nums">
+                <span>Uang diterima</span><span>{{n.received}}</span>
+              </span>
+            </span>
+          </sc-if>
+          <span style="width: 100%; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-top: 12px; border-top: 1.5px solid #ECECE7">
+            <span style="font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums">{{n.changeText}}</span>
+            <span style="font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums">{{n.total}}</span>
+          </span>
+        </button>
+      </sc-for>
+    </div>
+    <sc-if value="{{noData}}" hint-placeholder-val="{{false}}">
+      <p style="margin: 0; padding: 40px 0; font-size: 16px; color: #5A5A55">Belum ada nota di tanggal ini.</p>
+    </sc-if>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  notas() {
+    return [
+      { no: 142, time: '17:20', received: 50000, lines: [['Sabun mandi batang', 2, 4500], ['Deterjen bubuk 800 g', 1, 21000], ['Mi goreng instan', 3, 3500]] },
+      { no: 141, time: '15:47', received: 39000, lines: [['Gula pasir 1 kg', 1, 17500], ['Kecap manis 135 ml', 1, 6500], ['Kopi sachet', 10, 1500]] },
+      { no: 140, time: '12:31', received: 20000, lines: [['Air mineral 600 ml', 2, 4000], ['Teh botol 350 ml', 2, 5000]] },
+      { no: 139, time: '10:05', received: 100000, lines: [['Beras 5 kg', 1, 72000], ['Minyak goreng 1 L', 1, 18000]] },
+      { no: 138, time: '08:40', received: 50000, lines: [['Mi goreng instan', 5, 3500], ['Telur ayam, per butir', 6, 2200]] },
+      { no: 137, time: '07:12', received: 50000, lines: [['Roti tawar', 1, 15000], ['Kopi sachet', 4, 1500]] },
+    ];
+  }
+
+  rp(n) {
+    return 'Rp' + Math.round(n).toLocaleString('id-ID');
+  }
+
+  renderVals() {
+    const st = this.state || {};
+    const date = st.date || '2026-10-29';
+    const openNo = 'openNo' in st ? st.openNo : 141;
+    const data = date === '2026-10-29' ? this.notas() : [];
+
+    const notas = data.map((n) => {
+      const total = n.lines.reduce((s, l) => s + l[1] * l[2], 0);
+      const count = n.lines.reduce((s, l) => s + l[1], 0);
+      const change = n.received - total;
+      const open = openNo === n.no;
+      return {
+        no: String(n.no).padStart(4, '0'),
+        time: n.time,
+        total: this.rp(total),
+        received: this.rp(n.received),
+        changeText: change === 0 ? 'Uang pas' : 'Kembalian ' + this.rp(change),
+        preview: count + ' barang · ' + n.lines.map((l) => l[0]).join(', '),
+        lines: n.lines.map((l) => ({ name: l[0], qty: l[1], sub: this.rp(l[1] * l[2]) })),
+        open,
+        cls: open ? 'kartu-buka' : '',
+        toggle: () => this.setState({ openNo: open ? null : n.no }),
+        sum: total,
+      };
+    });
+
+    const sum = notas.reduce((s, n) => s + n.sum, 0);
+    return {
+      date,
+      onDate: (e) => this.setState({ date: e.target.value, exported: false }),
+      summary: notas.length ? notas.length + ' nota · total ' + this.rp(sum) : 'Tidak ada penjualan',
+      notas,
+      noData: notas.length === 0,
+      exported: !!st.exported,
+      fileName: 'pas-penjualan-' + date + '.csv',
+      exportCsv: () => this.setState({ exported: true }),
+    };
+  }
+}
+</script>
+</body>
+</html>

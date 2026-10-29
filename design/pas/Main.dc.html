@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Kasir</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&amp;display=swap">
+<style>
+body{margin:0;background:#F4F4F1}
+a{color:#141414}a:hover{color:#2340FF}
+.tab{color:#5A5A55;text-decoration:none;padding:10px 2px;border-bottom:2px solid transparent;font-weight:600;font-size:15px}
+.tab:hover{color:#141414}
+.tab-on{color:#141414;border-bottom-color:#141414}
+.kartu{background:#FFFFFF;border:1.5px solid #DCDCD6;border-radius:10px;cursor:pointer;transition:transform .14s ease,box-shadow .14s ease,border-color .14s ease}
+.kartu:hover{transform:translate(-2px,-3px);border-color:#141414;box-shadow:3px 4px 0 #141414}
+.kartu:active{transform:translate(0,0);box-shadow:0 0 0 #141414}
+.kartu:focus-visible{outline:3px solid #2340FF;outline-offset:2px}
+.kartu-habis,.kartu-habis:hover{background:transparent;border-style:dashed;border-color:#C9C9C2;transform:none;box-shadow:none;cursor:not-allowed}
+.sisa{font-size:13px;color:#5A5A55}
+.sisa-low{color:#141414;font-weight:700}
+.cta{background:#2340FF;color:#FFFFFF;border:0;border-radius:10px;cursor:pointer;transition:background .14s ease,transform .14s ease}
+.cta:hover{background:#1A31D1}
+.cta:active{transform:translateY(1px)}
+.cta:disabled,.cta:disabled:hover{background:#DCDCD6;color:#5A5A55;cursor:not-allowed;transform:none}
+.btn3{background:transparent;color:#141414;border:1.5px solid #141414;border-radius:8px;cursor:pointer}
+.btn3:hover{background:#F4F4F1}
+.btn3:disabled{border-color:#DCDCD6;color:#9A9A93;cursor:not-allowed}
+.chip{border:1.5px solid #DCDCD6;background:transparent;color:#141414;border-radius:999px;cursor:pointer}
+.chip:hover{border-color:#141414}
+.chip:disabled,.chip:disabled:hover{border-color:#E6E6E1;color:#9A9A93;cursor:not-allowed}
+.chip-on,.chip-on:hover{background:#141414;color:#F4F4F1;border-color:#141414}
+.teks{background:transparent;border:0;padding:0;color:#5A5A55;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.teks:hover{color:#141414}
+</style>
+</helmet>
+<div style="min-height: 1000px; background: #F4F4F1; color: #141414; font-family: 'Hanken Grotesk', system-ui, sans-serif; display: flex; flex-direction: column">
+  <header style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 40px; padding: 16px 32px; border-bottom: 1.5px solid #DCDCD6">
+    <a href="Main.dc.html" aria-label="Pas, ke layar kasir" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #141414">
+      <svg width="30" height="30" viewBox="0 0 48 48" aria-hidden="true"><g transform="rotate(-6 24 24)"><rect x="3" y="3" width="42" height="42" rx="11" fill="#141414"></rect><rect x="12" y="15.5" width="24" height="5.5" rx="2.75" fill="#F4F4F1"></rect><rect x="12" y="27" width="24" height="5.5" rx="2.75" fill="#F4F4F1"></rect></g></svg>
+      <span style="font-size: 27px; font-weight: 800; letter-spacing: -0.6px; line-height: 1">pas</span>
+    </a>
+    <nav aria-label="Menu utama" style="display: flex; flex-wrap: wrap; gap: 4px 28px">
+      <a href="Main.dc.html" class="tab tab-on" aria-current="page">Kasir</a>
+      <a href="Barang.dc.html" class="tab">Barang</a>
+      <a href="Riwayat.dc.html" class="tab">Riwayat</a>
+      <a href="Ringkasan.dc.html" class="tab">Ringkasan</a>
+    </nav>
+    <div style="margin-left: auto; display: flex; flex-direction: column; align-items: flex-end; gap: 2px">
+      <span style="font-size: 14px; font-weight: 600">Kamis, 29 Oktober</span>
+      <span style="font-size: 13px; color: #5A5A55">[Nama toko]</span>
+    </div>
+  </header>
+
+  <main style="flex-grow: 1; width: 100%; max-width: 1440px; margin: 0 auto; box-sizing: border-box; padding: 28px 32px 48px; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 32px">
+    <section aria-label="Pilih barang" style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <label for="cari" style="font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #5A5A55">Cari barang</label>
+        <input id="cari" type="search" value="{{q}}" onChange="{{onSearch}}" placeholder="Ketik nama barang, mis. gula" autocomplete="off" style="height: 52px; box-sizing: border-box; padding: 0 18px; border: 1.5px solid #141414; border-radius: 10px; background: #FFFFFF; font-family: inherit; font-size: 17px; color: #141414">
+      </div>
+      <div role="group" aria-label="Kategori" style="display: flex; flex-wrap: wrap; gap: 8px">
+        <sc-for list="{{cats}}" as="c" hint-placeholder-count="5">
+          <button type="button" class="chip {{c.cls}}" aria-pressed="{{c.on}}" onClick="{{c.pick}}" style="height: 40px; padding: 0 16px; font-family: inherit; font-size: 14px; font-weight: 600">{{c.label}}</button>
+        </sc-for>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(196px, 1fr)); gap: 14px">
+        <sc-for list="{{items}}" as="it" hint-placeholder-count="12">
+          <button type="button" class="kartu {{it.cls}}" onClick="{{it.add}}" disabled="{{it.off}}" aria-label="{{it.aria}}" style="min-height: 156px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; gap: 18px; text-align: left; font-family: inherit; color: #141414">
+            <span style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px">
+              <span style="font-size: 16px; font-weight: 600; line-height: 1.3">{{it.name}}</span>
+              <sc-if value="{{it.inCart}}" hint-placeholder-val="{{false}}">
+                <span style="flex-shrink: 0; min-width: 28px; height: 28px; padding: 0 7px; box-sizing: border-box; border-radius: 999px; background: #141414; color: #F4F4F1; font-size: 13px; font-weight: 700; display: grid; place-items: center">{{it.qty}}</span>
+              </sc-if>
+            </span>
+            <span style="display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 24px; font-weight: 800; letter-spacing: -0.3px; font-variant-numeric: tabular-nums">{{it.price}}</span>
+              <span class="sisa {{it.sisaCls}}">{{it.sisa}}</span>
+            </span>
+          </button>
+        </sc-for>
+      </div>
+      <sc-if value="{{noResult}}" hint-placeholder-val="{{false}}">
+        <p style="margin: 8px 0 0; font-size: 15px; color: #5A5A55">Tidak ada barang yang cocok. Cek ejaannya, atau tambahkan barangnya di layar <a href="Barang.dc.html">Barang</a>.</p>
+      </sc-if>
+    </section>
+
+    <aside aria-label="Nota berjalan" style="flex: 1 1 340px; max-width: 440px; box-sizing: border-box; background: #FFFFFF; border: 1.5px solid #141414; border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 18px">
+      <sc-if value="{{paid}}" hint-placeholder-val="{{false}}">
+        <div style="display: flex; flex-direction: column; gap: 20px">
+          <div style="display: flex; justify-content: space-between; align-items: baseline">
+            <h2 style="margin: 0; font-size: 20px; font-weight: 700">Nota #{{paidNota}}</h2>
+            <span style="font-size: 13px; color: #5A5A55">{{paidCount}} barang</span>
+          </div>
+          <div style="align-self: flex-start; transform: rotate(-6deg); border: 3px solid #141414; border-radius: 8px; padding: 6px 16px; font-size: 30px; font-weight: 800; letter-spacing: 3px">LUNAS</div>
+          <div style="display: flex; flex-direction: column; gap: 10px; padding: 14px 0; border-top: 1.5px dashed #DCDCD6; border-bottom: 1.5px dashed #DCDCD6; font-variant-numeric: tabular-nums">
+            <div style="display: flex; justify-content: space-between; font-size: 15px"><span style="color: #5A5A55">Total</span><span style="font-weight: 600">{{paidTotal}}</span></div>
+            <div style="display: flex; justify-content: space-between; font-size: 15px"><span style="color: #5A5A55">Uang diterima</span><span style="font-weight: 600">{{paidReceived}}</span></div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 4px">
+            <span style="font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #5A5A55">Kembalian</span>
+            <span style="font-size: 48px; font-weight: 800; letter-spacing: -1px; line-height: 1.05; font-variant-numeric: tabular-nums">{{paidChange}}</span>
+          </div>
+          <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #5A5A55">Stok sudah dikurangi. Nota ini masuk ke <a href="Riwayat.dc.html">Riwayat</a>.</p>
+          <button type="button" class="cta" onClick="{{newNota}}" style="height: 64px; font-family: inherit; font-size: 19px; font-weight: 700">Nota baru</button>
+        </div>
+      </sc-if>
+      <sc-if value="{{notPaid}}" hint-placeholder-val="{{true}}">
+        <div style="display: flex; flex-direction: column; gap: 18px">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px">
+            <h2 style="margin: 0; font-size: 20px; font-weight: 700">Nota #{{nota}}</h2>
+            <sc-if value="{{hasLines}}" hint-placeholder-val="{{true}}">
+              <button type="button" class="teks" onClick="{{clear}}" style="font-family: inherit; font-size: 14px">Kosongkan</button>
+            </sc-if>
+          </div>
+          <sc-if value="{{empty}}" hint-placeholder-val="{{false}}">
+            <p style="margin: 0; padding: 28px 0; border-top: 1.5px dashed #DCDCD6; border-bottom: 1.5px dashed #DCDCD6; font-size: 15px; line-height: 1.5; color: #5A5A55">Nota masih kosong. Ketuk kartu barang di kiri untuk menambahkannya.</p>
+          </sc-if>
+          <sc-if value="{{hasLines}}" hint-placeholder-val="{{true}}">
+            <div style="display: flex; flex-direction: column; border-top: 1.5px dashed #DCDCD6">
+              <sc-for list="{{lines}}" as="l" hint-placeholder-count="2">
+                <div style="display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1.5px dashed #DCDCD6">
+                  <div style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px">
+                    <span style="font-size: 15px; font-weight: 600">{{l.name}}</span>
+                    <span style="font-size: 13px; color: #5A5A55; font-variant-numeric: tabular-nums">{{l.unit}}</span>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 6px">
+                    <button type="button" class="btn3" onClick="{{l.dec}}" aria-label="Kurangi {{l.name}}" style="width: 36px; height: 36px; padding: 0; font-family: inherit; font-size: 18px; font-weight: 600">−</button>
+                    <span style="min-width: 24px; text-align: center; font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums">{{l.qty}}</span>
+                    <button type="button" class="btn3" onClick="{{l.inc}}" disabled="{{l.max}}" aria-label="Tambah {{l.name}}" style="width: 36px; height: 36px; padding: 0; font-family: inherit; font-size: 18px; font-weight: 600">+</button>
+                  </div>
+                  <span style="min-width: 84px; text-align: right; font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums">{{l.sub}}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px">
+            <span style="font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #5A5A55">Total</span>
+            <span style="font-size: 40px; font-weight: 800; letter-spacing: -1px; line-height: 1; font-variant-numeric: tabular-nums">{{totalText}}</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <label for="terima" style="font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #5A5A55">Uang diterima</label>
+            <input id="terima" type="text" inputmode="numeric" value="{{receivedText}}" onChange="{{onReceived}}" placeholder="0" autocomplete="off" style="height: 52px; box-sizing: border-box; padding: 0 16px; border: 1.5px solid #141414; border-radius: 10px; background: #FFFFFF; font-family: inherit; font-size: 22px; font-weight: 700; color: #141414; font-variant-numeric: tabular-nums">
+            <div style="display: flex; flex-wrap: wrap; gap: 6px">
+              <sc-for list="{{quick}}" as="k" hint-placeholder-count="4">
+                <button type="button" class="chip {{k.cls}}" onClick="{{k.pick}}" disabled="{{k.off}}" style="height: 38px; padding: 0 14px; font-family: inherit; font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums">{{k.label}}</button>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-top: 14px; border-top: 1.5px dashed #DCDCD6">
+            <span style="font-size: 15px; color: #5A5A55">{{changeLabel}}</span>
+            <span style="font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums">{{changeText}}</span>
+          </div>
+          <button type="button" class="cta" onClick="{{pay}}" disabled="{{cantPay}}" style="height: 64px; font-family: inherit; font-size: 19px; font-weight: 700; font-variant-numeric: tabular-nums">{{ctaLabel}}</button>
+        </div>
+      </sc-if>
+    </aside>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  catalog() {
+    return [
+      { id: 1, name: 'Mi goreng instan', cat: 'Makanan', price: 3500, stock: 48 },
+      { id: 2, name: 'Telur ayam, per butir', cat: 'Dapur', price: 2200, stock: 90 },
+      { id: 3, name: 'Gula pasir 1 kg', cat: 'Dapur', price: 17500, stock: 12 },
+      { id: 4, name: 'Minyak goreng 1 L', cat: 'Dapur', price: 18000, stock: 3 },
+      { id: 5, name: 'Beras 5 kg', cat: 'Dapur', price: 72000, stock: 6 },
+      { id: 6, name: 'Kopi sachet', cat: 'Minuman', price: 1500, stock: 106 },
+      { id: 7, name: 'Air mineral 600 ml', cat: 'Minuman', price: 4000, stock: 36 },
+      { id: 8, name: 'Teh botol 350 ml', cat: 'Minuman', price: 5000, stock: 0 },
+      { id: 9, name: 'Roti tawar', cat: 'Makanan', price: 15000, stock: 4 },
+      { id: 10, name: 'Kecap manis 135 ml', cat: 'Dapur', price: 6500, stock: 18 },
+      { id: 11, name: 'Sabun mandi batang', cat: 'Kebersihan', price: 4500, stock: 22 },
+      { id: 12, name: 'Deterjen bubuk 800 g', cat: 'Kebersihan', price: 21000, stock: 9 },
+    ];
+  }
+
+  rp(n) {
+    return 'Rp' + Math.round(n).toLocaleString('id-ID');
+  }
+
+  renderVals() {
+    const st = this.state || {};
+    const cart = st.cart || { 1: 2, 2: 4 };
+    const stock = st.stock || {};
+    const cat = st.cat || 'Semua';
+    const q = st.q || '';
+    const nota = st.nota || 143;
+    const received = 'received' in st ? st.received : 20000;
+    const all = this.catalog().map((p) => ({ ...p, stock: stock[p.id] ?? p.stock }));
+
+    const setQty = (p, delta) => {
+      const next = Math.max(0, Math.min(p.stock, (cart[p.id] || 0) + delta));
+      const c = { ...cart };
+      if (next) c[p.id] = next; else delete c[p.id];
+      this.setState({ cart: c });
+    };
+
+    const needle = q.trim().toLowerCase();
+    const items = all
+      .filter((p) => (cat === 'Semua' || p.cat === cat) && (!needle || p.name.toLowerCase().includes(needle)))
+      .map((p) => {
+        const qty = cart[p.id] || 0;
+        const left = p.stock - qty;
+        let sisa = 'Sisa ' + left;
+        if (p.stock === 0) sisa = 'Stok habis';
+        else if (left === 0) sisa = 'Semua stok sudah di nota';
+        else if (left <= 5) sisa = 'Sisa ' + left + ' · menipis';
+        return {
+          name: p.name,
+          price: this.rp(p.price),
+          qty,
+          inCart: qty > 0,
+          off: left <= 0,
+          cls: left <= 0 ? 'kartu-habis' : '',
+          sisa,
+          sisaCls: left <= 5 ? 'sisa-low' : '',
+          aria: p.name + ', ' + this.rp(p.price) + ', ' + sisa + (left > 0 ? '. Tambah ke nota.' : '.'),
+          add: () => setQty(p, 1),
+        };
+      });
+
+    const lines = all.filter((p) => cart[p.id]).map((p) => ({
+      name: p.name,
+      qty: cart[p.id],
+      unit: cart[p.id] + ' × ' + this.rp(p.price),
+      sub: this.rp(cart[p.id] * p.price),
+      max: cart[p.id] >= p.stock,
+      inc: () => setQty(p, 1),
+      dec: () => setQty(p, -1),
+    }));
+
+    const total = all.reduce((sum, p) => sum + (cart[p.id] || 0) * p.price, 0);
+    const count = lines.reduce((sum, l) => sum + l.qty, 0);
+    const enough = total > 0 && received !== null && received >= total;
+
+    let ctaLabel = 'Bayar ' + this.rp(total);
+    if (total === 0) ctaLabel = 'Pilih barang dulu';
+    else if (received === null) ctaLabel = 'Isi uang yang diterima';
+    else if (!enough) ctaLabel = 'Uangnya kurang ' + this.rp(total - received);
+
+    let changeLabel = 'Kembalian';
+    let changeText = '–';
+    if (total > 0 && received !== null) {
+      if (enough) changeText = this.rp(received - total);
+      else { changeLabel = 'Masih kurang'; changeText = this.rp(total - received); }
+    }
+
+    const quick = [
+      { label: 'Uang pas', v: total },
+      { label: 'Rp20.000', v: 20000 },
+      { label: 'Rp50.000', v: 50000 },
+      { label: 'Rp100.000', v: 100000 },
+    ].map((k) => ({
+      label: k.label,
+      off: total === 0 || k.v < total,
+      cls: total > 0 && received === k.v ? 'chip-on' : '',
+      pick: () => this.setState({ received: k.v }),
+    }));
+
+    const paid = st.paid || null;
+
+    return {
+      q,
+      onSearch: (e) => this.setState({ q: e.target.value }),
+      cats: ['Semua', 'Makanan', 'Minuman', 'Dapur', 'Kebersihan'].map((label) => ({
+        label,
+        on: label === cat,
+        cls: label === cat ? 'chip-on' : '',
+        pick: () => this.setState({ cat: label }),
+      })),
+      items,
+      noResult: items.length === 0,
+      nota: String(nota).padStart(4, '0'),
+      lines,
+      hasLines: lines.length > 0,
+      empty: lines.length === 0,
+      clear: () => this.setState({ cart: {}, received: null }),
+      totalText: this.rp(total),
+      receivedText: received === null ? '' : received.toLocaleString('id-ID'),
+      onReceived: (e) => {
+        const digits = e.target.value.replace(/\D/g, '');
+        this.setState({ received: digits ? Number(digits) : null });
+      },
+      quick,
+      changeLabel,
+      changeText,
+      ctaLabel,
+      cantPay: !enough,
+      pay: () => {
+        if (!enough) return;
+        const s = { ...stock };
+        all.forEach((p) => { if (cart[p.id]) s[p.id] = p.stock - cart[p.id]; });
+        this.setState({
+          stock: s,
+          cart: {},
+          paid: { total, received, change: received - total, count, nota },
+        });
+      },
+      paid: !!paid,
+      notPaid: !paid,
+      paidNota: paid ? String(paid.nota).padStart(4, '0') : '',
+      paidCount: paid ? paid.count : 0,
+      paidTotal: paid ? this.rp(paid.total) : '',
+      paidReceived: paid ? this.rp(paid.received) : '',
+      paidChange: paid ? this.rp(paid.change) : '',
+      newNota: () => this.setState({ paid: null, received: null, nota: nota + 1 }),
+    };
+  }
+}
+</script>
+</body>
+</html>

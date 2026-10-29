@@ -1,0 +1,24 @@
+{
+  "v": 3,
+  "createdOnFiles": { "v": 1, "at": "2026-10-29T06:00:00Z" },
+  "title": "Pas · POS",
+  "launch": { "view": "canvas", "page": "app" },
+  "pages": [
+    { "id": "app", "name": "Layar app" },
+    { "id": "brand", "name": "Brand & logo" }
+  ],
+  "boards": {
+    "Main.dc.html": { "x": 0, "y": 0, "w": 1440, "h": 1000, "title": "1 · Kasir", "page": "app", "expand": "fill", "is_interactive": true },
+    "Barang.dc.html": { "x": 1520, "y": 0, "w": 1440, "h": 1080, "title": "2 · Barang + tambah stok", "page": "app", "expand": "fill", "is_interactive": true },
+    "Riwayat.dc.html": { "x": 3040, "y": 0, "w": 1440, "h": 1000, "title": "3 · Riwayat nota", "page": "app", "expand": "fill", "is_interactive": true },
+    "Ringkasan.dc.html": { "x": 4560, "y": 0, "w": 1440, "h": 1000, "title": "4 · Ringkasan harian", "page": "app", "expand": "fill", "is_interactive": true },
+    "Logo.dc.html": { "x": 0, "y": 0, "w": 1440, "h": 960, "title": "Logo", "page": "brand" },
+    "Brand.dc.html": { "x": 1520, "y": 0, "w": 1440, "h": 3100, "title": "Brand guideline", "page": "brand" }
+  },
+  "order": ["Main.dc.html", "Barang.dc.html", "Riwayat.dc.html", "Ringkasan.dc.html", "Logo.dc.html", "Brand.dc.html"],
+  "notes": {
+    "judulapp": { "x": 0, "y": -300, "text": "Pas · mockup POS untuk laptop kasir", "kind": "title1", "maxW": 6000, "page": "app" },
+    "judulbrand": { "x": 0, "y": -300, "text": "Pas · logo & brand guideline", "kind": "title1", "maxW": 2960, "page": "brand" }
+  },
+  "designSystems": []
+}
