@@ -13,6 +13,17 @@ simple → structural → logical → efficient & effective. "Impressive" hanya 
 
 Rincian dan alasan: `notes/prinsip-kerja.md` (baca saat mulai proyek atau saat ragu, bukan tiap sesi).
 
+## Prinsip pemilik (rincian: `notes/prinsip-saya.md`)
+Berlaku di samping prinsip di atas, tidak menggantikannya. Bila bentrok langsung: tanya.
+- **P1 Usulkan, lalu tunggu OK.** Jelaskan rencana (apa, file mana, kenapa, perkiraan biaya) sebelum mengubah file. Membaca, mencari, dan menjalankan uji tanpa efek samping boleh langsung.
+- **P2 Hemat biaya dulu.** Opsi yang sama-sama cukup: pilih yang lebih murah; sebut biaya opsi berbayar.
+- **P3 Penjelasan sedang, dengan alasan.** Apa yang dikerjakan dan kenapa, dalam beberapa kalimat.
+- **P4 Branch + PR, bukan main.** Tidak ada commit/push langsung ke `main`. Merge setelah pemilik setuju.
+- **P5 Jangan ubah yang tidak diminta.** Temuan lain dicatat atau diusulkan, tidak dikerjakan diam-diam.
+- **P6 Defensif untuk yang diminta, tanpa tambahan.** Lengkap (validasi, error, kasus tepi) tetapi tanpa fitur/abstraksi yang belum diminta.
+- **P7 Teks Indonesia, nama Inggris.** Komentar, commit, PR, dokumen: Indonesia. Variabel, fungsi, file: Inggris.
+- **P8 Pola pikir produk.** Sebelum rilis: keamanan, biaya per pengguna, batas pemakaian, kegagalan layanan luar.
+
 ## Kerja bersama pemilik repo
 - **Harus bisa dijelaskan.** Pemilik repo harus mampu menjelaskan setiap langkah. Jelaskan singkat setiap file dan fungsi yang dibuat, tanpa menggurui.
 - **"Diskusi dulu"** = jelaskan pilihan dan kekurangannya, beri rekomendasi, lalu tunggu. Jangan bertindak.
@@ -45,10 +56,10 @@ Rincian dan alasan: `notes/prinsip-kerja.md` (baca saat mulai proyek atau saat r
 1. Jalankan uji sesuai kriteria selesai; catat hasil di `notes/hasil-uji.md`.
 2. Perbarui `notes/progress.md`: status irisan, bukti, dan **Sekarang** untuk irisan berikutnya.
 3. Catat keputusan baru (K##) bila ada, dan perluas `notes/penjelasan-kode.md` untuk file yang selesai.
-4. Commit kecil dengan pesan jelas; push. Jangan commit ke `main` langsung untuk perubahan besar: pakai branch + PR.
+4. Commit kecil dengan pesan jelas (bahasa Indonesia) di branch, push branch, buka PR. Jangan commit atau push ke `main`; merge menunggu persetujuan pemilik (P4).
 
 ## Minta izin dulu
 Menghapus data/branch, `push --force`, mengubah repo jadi publik, menambah dependensi besar, mengubah skema data.
 
 ## Peta repo
-`notes/` rencana, progres, keputusan, penjelasan kode, hasil uji, prinsip · `src/` logika · `scripts/` pekerjaan sekali jalan · `tests/` uji · `.claude/commands/` perintah `/lanjut` `/tutup` `/rencana`
+`notes/` rencana, progres, keputusan, penjelasan kode, hasil uji, prinsip-kerja (Guru Besar AI), prinsip-saya (pemilik) · `src/` logika · `scripts/` pekerjaan sekali jalan · `tests/` uji · `.claude/commands/` perintah `/rencana` `/lanjut` `/tutup` `/prinsip`

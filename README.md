@@ -16,11 +16,12 @@ Pola dasarnya diadaptasi dari `notes/prinsip-kerja.md` di repo capstone `reinerr
 │   ├── keputusan.md           # log K01, K02, … beserta alasan dan status
 │   ├── penjelasan-kode.md     # per file: tugas, fungsi penting, tanya-jawab
 │   ├── hasil-uji.md           # putaran uji dan temuan
-│   └── prinsip-kerja.md       # prinsip dan metode (rujukan, tidak dibaca tiap sesi)
+│   ├── prinsip-kerja.md       # prinsip dan metode Guru Besar AI (rujukan, tidak dibaca tiap sesi)
+│   └── prinsip-saya.md        # prinsip pemilik repo (P1, P2, …), ditambah lewat /prinsip
 ├── src/                       # logika; modul tidak menjalankan apa pun saat import
 ├── scripts/                   # pekerjaan sekali jalan (ingest, cek koneksi, eval)
 ├── tests/
-└── .claude/commands/          # /rencana  /lanjut  /tutup
+└── .claude/commands/          # /rencana  /lanjut  /tutup  /prinsip
 ```
 
 ## Memakai template
